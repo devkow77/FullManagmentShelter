@@ -9,7 +9,7 @@ const RegisterPage = () => {
 
   return (
     <main>
-      <Container className="flex min-h-screen items-center justify-center">
+      <Container className="flex min-h-screen items-center justify-center py-4">
         <article
           aria-labelledby="register-heading"
           className="space-y-6 lg:space-y-8"

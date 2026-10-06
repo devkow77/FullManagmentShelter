@@ -1,5 +1,18 @@
 import { z } from 'zod';
 
+const startOfToday = () => {
+  const date = new Date();
+  date.setHours(0, 0, 0, 0);
+  return date;
+};
+
+const isAtLeast18 = (date: Date) => {
+  const eighteenthBirthday = new Date(date);
+  eighteenthBirthday.setFullYear(eighteenthBirthday.getFullYear() + 18);
+  eighteenthBirthday.setHours(0, 0, 0, 0);
+  return eighteenthBirthday.getTime() <= startOfToday().getTime();
+};
+
 export const registerSchema = z
   .object({
     fullName: z
@@ -9,6 +22,13 @@ export const registerSchema = z
     email: z
       .string()
       .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Niepoprawny adres email.'),
+    dateOfBirth: z.coerce
+      .date({ message: 'Niepoprawna data urodzenia.' })
+      .refine(
+        (date) => date.getTime() <= new Date().getTime(),
+        'Data urodzenia nie może być z przyszłości.',
+      )
+      .refine(isAtLeast18, 'Musisz mieć ukończone 18 lat.'),
     password: z
       .string()
       .min(8, 'Hasło musi mieć min. 8 znaków')

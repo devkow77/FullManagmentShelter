@@ -1,4 +1,5 @@
 import { Button, Input, Label } from "@/components/ui";
+import PasswordInput from "./PasswordInput";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -93,10 +94,9 @@ const LoginForm = ({ on2FARequired }: LoginFormProps) => {
 
       {/* Password */}
       <Label required>Hasło</Label>
-      <Input
-        type="password"
+      <PasswordInput
         {...register("password")}
-        className={`mt-2 mb-4 ${errors.password ? "bg-red-600/20" : ""}`}
+        className={errors.password ? "bg-red-600/20" : ""}
         placeholder="Podaj swoje hasło..."
       />
       {errors.password && (

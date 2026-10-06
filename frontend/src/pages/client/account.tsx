@@ -10,7 +10,6 @@ import {
   AlertDialogTrigger,
   Button,
   Container,
-  Input,
   Label,
   Skeleton,
 } from "@/components/ui";
@@ -40,6 +39,7 @@ import {
 } from "@/lib/utils";
 import type { Adoption } from "@/types";
 import { ImageOff } from "lucide-react";
+import PasswordInput from "@/components/auth/PasswordInput";
 
 const updatePasswordSchema = z
   .object({
@@ -243,13 +243,12 @@ const AccountPage = () => {
             <Label htmlFor="client-currentPassword" required>
               Aktualne hasło
             </Label>
-            <Input
+            <PasswordInput
               id="client-currentPassword"
               {...register("currentPassword")}
-              className={`mt-2 mb-4 ${errors.currentPassword && "bg-red-600/20"}`}
+              className={errors.currentPassword ? "bg-red-600/20" : ""}
               placeholder="Podaj swoje aktualne hasło..."
               autoFocus
-              type="password"
               autoComplete="current-password"
               aria-invalid={Boolean(errors.currentPassword)}
               aria-describedby={
@@ -270,12 +269,11 @@ const AccountPage = () => {
             <Label htmlFor="client-newPassword" required>
               Nowe hasło
             </Label>
-            <Input
+            <PasswordInput
               id="client-newPassword"
               {...register("newPassword")}
-              className={`mt-2 mb-4 ${errors.newPassword && "bg-red-600/20"}`}
+              className={errors.newPassword ? "bg-red-600/20" : ""}
               placeholder="Podaj nowe hasło..."
-              type="password"
               autoComplete="new-password"
               aria-invalid={Boolean(errors.newPassword)}
               aria-describedby={
@@ -295,12 +293,11 @@ const AccountPage = () => {
             <Label htmlFor="client-confirmNewPassword" required>
               Powtórz nowe hasło
             </Label>
-            <Input
+            <PasswordInput
               id="client-confirmNewPassword"
               {...register("confirmNewPassword")}
-              className={`mt-2 mb-4 ${errors.confirmNewPassword && "bg-red-600/20"}`}
+              className={errors.confirmNewPassword ? "bg-red-600/20" : ""}
               placeholder="Powtórz nowe hasło..."
-              type="password"
               autoComplete="new-password"
               aria-invalid={Boolean(errors.confirmNewPassword)}
               aria-describedby={
@@ -461,9 +458,17 @@ const AdoptionCard = ({
           </p>
           {shelterVisitDays !== null && (
             <p className="text-xs font-medium text-amber-800 lg:text-sm">
-              {formatShelterVisitCountdown(shelterVisitDays)}
+              {formatShelterVisitCountdown(shelterVisitDays)} <br /> Otrzymano
+              maila z instrukcją wizyty kontrolnej.
             </p>
           )}
+          {adoption.employeeNote?.trim() &&
+            (adoption.status === "ANULOWANA" ||
+              adoption.status === "ODRZUCONA") && (
+              <p className="text-xs leading-5 text-slate-700 lg:text-sm lg:leading-6">
+                {adoption.employeeNote.trim()}
+              </p>
+            )}
         </div>
       </Link>
       {canCancel && (

@@ -267,8 +267,8 @@ const AdoptionChatBox = () => {
       className="fixed right-4 bottom-4 z-50 flex flex-col items-end gap-3 sm:right-6 sm:bottom-6"
     >
       {open && (
-        <div className="flex h-[min(560px,calc(100dvh-6.5rem))] w-[min(100vw-2rem,380px)] flex-col overflow-hidden rounded-2xl shadow-xl">
-          <div className="flex items-center justify-between gap-2 bg-green-800 px-4 py-3 text-white">
+        <div className="flex h-[min(560px,calc(100dvh-6.5rem))] w-[min(100vw-2rem,380px)] flex-col overflow-hidden rounded-2xl bg-white shadow-2xl">
+          <div className="flex items-center justify-between gap-2 border-b border-gray-100 bg-white px-4 py-3 text-green-900">
             <p className="text-sm leading-none font-semibold">
               Asystent adopcji
             </p>
@@ -279,7 +279,7 @@ const AdoptionChatBox = () => {
                   aria-label="Wyczyść rozmowę"
                   disabled={loading}
                   onClick={resetConversation}
-                  className="cursor-pointer rounded p-1 transition-colors hover:bg-white/10 disabled:opacity-50"
+                  className="cursor-pointer rounded p-1 transition-colors hover:bg-gray-100 disabled:opacity-50"
                 >
                   <RotateCcw className="size-4" />
                 </button>
@@ -288,14 +288,14 @@ const AdoptionChatBox = () => {
                 type="button"
                 aria-label="Zamknij chat"
                 onClick={() => setOpen(false)}
-                className="cursor-pointer rounded p-1 transition-colors hover:bg-white/10"
+                className="cursor-pointer rounded p-1 transition-colors hover:bg-gray-100"
               >
                 <X className="size-4" />
               </button>
             </div>
           </div>
 
-          <div className="flex-1 space-y-3 overflow-y-auto bg-green-50 px-3 py-3">
+          <div className="flex-1 space-y-3 overflow-y-auto bg-white px-3 py-3">
             {messages.map((message) => (
               <div
                 key={message.id}
@@ -339,7 +339,7 @@ const AdoptionChatBox = () => {
 
             {!hasConversation && !loading && (
               <div className="space-y-2">
-                <p className="px-0.5 text-[11px] font-medium text-green-900/70">
+                <p className="px-0.5 text-[11px] font-semibold text-green-900">
                   Często zadawane pytania
                 </p>
                 <div className="flex flex-wrap gap-1.5">
@@ -348,7 +348,7 @@ const AdoptionChatBox = () => {
                       key={item.label}
                       type="button"
                       onClick={() => void sendMessage(item.message)}
-                      className="cursor-pointer rounded-full border border-green-800/20 bg-white/90 px-3 py-1.5 text-left text-[11px] leading-4 text-green-900 shadow-sm transition-colors hover:border-green-800/40 hover:bg-green-50 disabled:opacity-50"
+                      className="cursor-pointer rounded-full border border-green-900/20 bg-white px-3 py-1.5 text-left text-[11px] leading-4 font-semibold text-green-900 shadow-sm transition-colors hover:border-green-900/40 hover:bg-green-50 disabled:opacity-50"
                     >
                       {item.label}
                     </button>

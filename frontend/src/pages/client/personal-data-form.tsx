@@ -61,6 +61,7 @@ const PersonalDataFormPage = () => {
   const [pendingFile, setPendingFile] = useState<File | null>(null);
   const [deletedImage, setDeletedImage] = useState<string | null>(null);
   const [email, setEmail] = useState("");
+  const [birthDateLocked, setBirthDateLocked] = useState(false);
 
   const [meta, setMeta] = useState({
     twoFactorEnabled: false,
@@ -103,6 +104,7 @@ const PersonalDataFormPage = () => {
         });
 
         setEmail(res.data.email);
+        setBirthDateLocked(Boolean(res.data.dateOfBirth));
 
         setMeta({
           twoFactorEnabled: res.data.twoFactorEnabled,
@@ -299,10 +301,10 @@ const PersonalDataFormPage = () => {
               <Input
                 id="fullName"
                 {...register("fullName")}
-                placeholder="Podaj imię i nazwisko..."
+                disabled
+                readOnly
                 className={errors.fullName ? "bg-red-600/20" : ""}
                 aria-invalid={Boolean(errors.fullName)}
-                required
               />
               {errors.fullName && (
                 <p className="text-xs font-medium text-red-600 lg:text-sm">
@@ -372,9 +374,10 @@ const PersonalDataFormPage = () => {
                 type="date"
                 max={getMaxDateOfBirth()}
                 {...register("dateOfBirth")}
+                disabled={birthDateLocked}
+                readOnly={birthDateLocked}
                 className={errors.dateOfBirth ? "bg-red-600/20" : ""}
                 aria-invalid={Boolean(errors.dateOfBirth)}
-                required
               />
               {errors.dateOfBirth && (
                 <p className="text-xs font-medium text-red-600 lg:text-sm">

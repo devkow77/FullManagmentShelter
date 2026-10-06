@@ -10,6 +10,7 @@ const testUser = {
   email: 'jan@example.com',
   password: 'Haslo12345!',
   confirmPassword: 'Haslo12345!',
+  dateOfBirth: '1990-06-15',
 };
 
 describe('POST /api/auth/register', () => {
@@ -309,9 +310,7 @@ describe('POST /api/auth/forgot-password i /reset-password', () => {
     });
 
     expect(res.status).toBe(StatusCodes.OK);
-    expect(res.body.msg).toBe(
-      'Hasło zostało zmienione. Możesz się zalogować.',
-    );
+    expect(res.body.msg).toBe('Hasło zostało zmienione. Możesz się zalogować.');
 
     const loginRes = await request(app).post('/api/auth/login').send({
       email: testUser.email,

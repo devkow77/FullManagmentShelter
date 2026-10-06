@@ -522,21 +522,18 @@ export const updateOwnProfile = async (req: Request, res: Response) => {
   }
 
   try {
-    const today = new Date();
-    const dateOfBirth = parsedBody.data.dateOfBirth
-      ? new Date(parsedBody.data.dateOfBirth)
-      : null;
+    const existing = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { dateOfBirth: true },
+    });
 
-    if (dateOfBirth && dateOfBirth.getTime() > today.getTime()) {
-      return res.status(StatusCodes.CONFLICT).json({
-        msg: 'Data urodzenia użytkownika jest nieprawidłowa!',
-      });
-    }
+    const { fullName: _fullName, dateOfBirth, ...profileData } = parsedBody.data;
 
     const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: {
-        ...parsedBody.data,
+        ...profileData,
+        ...(existing?.dateOfBirth ? {} : { dateOfBirth }),
         isFormFilled: true,
       },
       select: userProfileSelect,

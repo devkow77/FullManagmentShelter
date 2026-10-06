@@ -164,7 +164,7 @@ const getConfirmDialogCopy = (
       return {
         title: "Czy na pewno chcesz zaakceptować wniosek?",
         description:
-          "To jeszcze nie finalna adopcja — wnioskodawca zostanie zaproszony na spotkanie. Ostateczna decyzja zapada po spotkaniu na żywo.",
+          "To jeszcze nie finalna adopcja. Wnioskodawca dostanie e-mail, że wniosek został wstępnie zaakceptowany i oczekujemy na ostateczną wizytę na żywo.",
         confirmLabel: "Tak, zaakceptuj",
       };
     case "ODRZUCONA":

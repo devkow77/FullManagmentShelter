@@ -1,10 +1,15 @@
 import { Button, Input, Label } from "@/components/ui";
+import PasswordInput from "./PasswordInput";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import { Link, useNavigate } from "react-router";
 import { toast } from "sonner";
+import {
+  getMaxDateOfBirth,
+  requiredDateOfBirthSchema,
+} from "@/schemas/user.schema";
 
 const registerSchema = z
   .object({
@@ -15,6 +20,7 @@ const registerSchema = z
     email: z
       .string()
       .regex(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Niepoprawny adres email."),
+    dateOfBirth: requiredDateOfBirthSchema,
     password: z
       .string()
       .min(8, "Hasło musi mieć min. 8 znaków")
@@ -90,11 +96,26 @@ const RegisterForm = () => {
         </p>
       )}
 
-      <Label required>Hasło</Label>
+      <Label htmlFor="dateOfBirth" required>
+        Data urodzenia
+      </Label>
       <Input
+        id="dateOfBirth"
+        type="date"
+        max={getMaxDateOfBirth()}
+        {...register("dateOfBirth")}
+        className={`mt-2 mb-4 ${errors.dateOfBirth ? "bg-red-600/20" : ""}`}
+      />
+      {errors.dateOfBirth && (
+        <p className="-mt-2 mb-4 text-xs font-medium text-red-600 lg:text-sm">
+          {errors.dateOfBirth.message}
+        </p>
+      )}
+
+      <Label required>Hasło</Label>
+      <PasswordInput
         {...register("password")}
-        type="password"
-        className={`mt-2 mb-4 ${errors.password ? "bg-red-600/20" : ""}`}
+        className={errors.password ? "bg-red-600/20" : ""}
         placeholder="Podaj swoje hasło..."
       />
       {errors.password && (
@@ -104,10 +125,9 @@ const RegisterForm = () => {
       )}
 
       <Label required>Powtórz hasło</Label>
-      <Input
+      <PasswordInput
         {...register("confirmPassword")}
-        type="password"
-        className={`mt-2 mb-4 ${errors.confirmPassword ? "bg-red-600/20" : ""}`}
+        className={errors.confirmPassword ? "bg-red-600/20" : ""}
         placeholder="Powtórz swoje hasło..."
       />
       {errors.confirmPassword && (

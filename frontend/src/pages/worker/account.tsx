@@ -5,7 +5,8 @@ import { useNavigate } from "react-router";
 import AdminDashboardNavbar from "@/components/layout/admin/DashboardNavbar";
 import WorkerDashboardNavbar from "@/components/layout/worker/DashboardNavbar";
 import { z } from "zod";
-import { Button, Input, Label } from "@/components/ui";
+import { Button, Label } from "@/components/ui";
+import PasswordInput from "@/components/auth/PasswordInput";
 import axios, { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -165,13 +166,12 @@ const AdminAccountPage = () => {
             <Label htmlFor="staff-currentPassword" required>
               Aktualne hasło
             </Label>
-            <Input
+            <PasswordInput
               id="staff-currentPassword"
               {...register("currentPassword")}
-              className={`mt-2 mb-4 ${errors.currentPassword && "bg-red-600/20"}`}
+              className={errors.currentPassword ? "bg-red-600/20" : ""}
               placeholder="Podaj swoje aktualne hasło..."
               autoFocus
-              type="password"
               autoComplete="current-password"
               aria-invalid={Boolean(errors.currentPassword)}
               aria-describedby={
@@ -192,12 +192,11 @@ const AdminAccountPage = () => {
             <Label htmlFor="staff-newPassword" required>
               Nowe hasło
             </Label>
-            <Input
+            <PasswordInput
               id="staff-newPassword"
               {...register("newPassword")}
-              className={`mt-2 mb-4 ${errors.newPassword && "bg-red-600/20"}`}
+              className={errors.newPassword ? "bg-red-600/20" : ""}
               placeholder="Podaj nowe hasło..."
-              type="password"
               autoComplete="new-password"
               aria-invalid={Boolean(errors.newPassword)}
               aria-describedby={
@@ -217,12 +216,11 @@ const AdminAccountPage = () => {
             <Label htmlFor="staff-confirmNewPassword" required>
               Powtórz nowe hasło
             </Label>
-            <Input
+            <PasswordInput
               id="staff-confirmNewPassword"
               {...register("confirmNewPassword")}
-              className="mt-2 mb-4"
+              className={errors.confirmNewPassword ? "bg-red-600/20" : ""}
               placeholder="Powtórz nowe hasło..."
-              type="password"
               autoComplete="new-password"
               aria-invalid={Boolean(errors.confirmNewPassword)}
               aria-describedby={

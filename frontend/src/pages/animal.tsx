@@ -282,7 +282,9 @@ const AnimalPage = () => {
               : hasRejectedAdoption
                 ? "Twój poprzedni wniosek o adopcję tego zwierzęcia został odrzucony. Nie możesz złożyć ponownego wniosku."
                 : hasCancelledAdoption
-                  ? "Twój wniosek o adopcję tego zwierzęcia został anulowany. Możesz złożyć nowy wniosek, jeśli zwierzę nadal szuka domu."
+                  ? existingAdoptionForAnimal?.employeeNote?.trim()
+                    ? `${existingAdoptionForAnimal.employeeNote.trim()} Możesz złożyć nowy wniosek, jeśli zwierzę nadal szuka domu.`
+                    : "Twój wniosek o adopcję tego zwierzęcia został anulowany. Możesz złożyć nowy wniosek, jeśli zwierzę nadal szuka domu."
                   : hasPendingAdoption
                     ? "Masz już aktywny wniosek adopcyjny dla tego zwierzęcia. Poczekaj na odpowiedź schroniska."
                     : !isProfilePending && !hasCompleteProfile
@@ -394,7 +396,7 @@ const AnimalPage = () => {
                       }
                       width={400}
                       height={400}
-                      className="size-full object-cover object-center"
+                      className={`size-full object-cover object-center ${isAlreadyAdopted ? "grayscale" : ""}`}
                     />
                   </SwiperSlide>
                 ))}
@@ -404,6 +406,17 @@ const AnimalPage = () => {
                 className="absolute size-10 object-cover text-gray-300 sm:size-20"
                 aria-hidden="true"
               />
+            )}
+            {isAlreadyAdopted && (
+              <>
+                <div
+                  className="pointer-events-none absolute inset-0 z-10 bg-black/30"
+                  aria-hidden="true"
+                />
+                <span className="pointer-events-none absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-green-300 bg-green-100 px-6 py-3 text-xs font-semibold text-green-900 sm:text-sm">
+                  Adoptowany
+                </span>
+              </>
             )}
           </div>
           <div className="flex-2 space-y-4">
@@ -463,7 +476,7 @@ const AnimalPage = () => {
             </p>
             <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="w-full max-w-xl space-y-3">
-                {canOpenAdoptionForm ? (
+                {isAlreadyAdopted ? null : canOpenAdoptionForm ? (
                   showAdoptionForm ? (
                     <form
                       onSubmit={handleSubmit(onSubmitAdoption)}

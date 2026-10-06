@@ -1,12 +1,12 @@
 const getAcceptanceTemplate = (userName: string, animalName: string) =>
   `Szanowny/a ${userName},
-  
-  z przyjemnością informujemy, że Twój wniosek o adopcję zwierzęcia ${animalName} został wstępnie zaakceptowany.
-  
-  Prosimy o przyjście do schroniska w celu finalizacji adopcji. Ostateczna decyzja o adopcji zapada po spotkaniu na żywo. Masz 7 dni od decyzji schroniska na przyjście do schroniska.
-  
-  Z poważaniem,
-  Zespół Schroniska`;
+
+z przyjemnością informujemy, że Twój wniosek o adopcję zwierzęcia ${animalName} został wstępnie zaakceptowany.
+
+Oczekujemy na ostateczną wizytę na żywo w schronisku. Ostateczna decyzja o adopcji zapada dopiero po tym spotkaniu. Masz 7 dni od decyzji schroniska na przyjście.
+
+Z poważaniem,
+Zespół Schroniska`;
 
 const getRejectionTemplate = (userName: string, animalName: string) =>
   `Szanowny/a ${userName},

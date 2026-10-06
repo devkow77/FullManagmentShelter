@@ -1,8 +1,5 @@
 import { z } from "zod";
-import {
-  emptyStringToNull,
-  phoneSchema,
-} from "@/schemas/common.schema";
+import { emptyStringToNull, phoneSchema } from "@/schemas/common.schema";
 
 export const RoleEnum = z.enum(["UZYTKOWNIK", "ADMINISTRATOR", "PRACOWNIK"], {
   message: "Rola nie może być pusta.",
@@ -59,7 +56,7 @@ const optionalDateOfBirthSchema = z
     return parseDateOnly(val).getTime() <= startOfToday().getTime();
   }, "Data urodzenia nie może być z przyszłości.");
 
-const requiredDateOfBirthSchema = z
+export const requiredDateOfBirthSchema = z
   .string()
   .min(1, "Data urodzenia jest wymagana.")
   .refine((val) => !Number.isNaN(Date.parse(val)), "Niepoprawna data.")

@@ -1,4 +1,5 @@
-import { Button, Input, Label } from "@/components/ui";
+import { Button, Label } from "@/components/ui";
+import PasswordInput from "./PasswordInput";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -60,10 +61,9 @@ const ResetPasswordForm = ({ token }: Props) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Label required>Nowe hasło</Label>
-      <Input
-        type="password"
+      <PasswordInput
         {...register("password")}
-        className={`mt-2 mb-4 ${errors.password ? "bg-red-600/20" : ""}`}
+        className={errors.password ? "bg-red-600/20" : ""}
         placeholder="Podaj nowe hasło..."
         autoFocus
       />
@@ -74,10 +74,9 @@ const ResetPasswordForm = ({ token }: Props) => {
       )}
 
       <Label required>Powtórz nowe hasło</Label>
-      <Input
-        type="password"
+      <PasswordInput
         {...register("confirmPassword")}
-        className={`mt-2 mb-4 ${errors.confirmPassword ? "bg-red-600/20" : ""}`}
+        className={errors.confirmPassword ? "bg-red-600/20" : ""}
         placeholder="Powtórz nowe hasło..."
       />
       {errors.confirmPassword && (

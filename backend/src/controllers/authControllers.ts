@@ -50,7 +50,7 @@ export const registerAccount = async (req: Request, res: Response) => {
       .json({ msg: 'Nieprawidłowy format danych!' });
   }
 
-  const { fullName, email, password } = parsedBody.data;
+  const { fullName, email, password, dateOfBirth } = parsedBody.data;
 
   try {
     const existingUser = await prisma.user.findUnique({ where: { email } });
@@ -68,6 +68,7 @@ export const registerAccount = async (req: Request, res: Response) => {
         data: {
           fullName,
           password: await bcrypt.hash(password, 10),
+          dateOfBirth,
           emailVerificationCode: verification.emailVerificationCode,
           emailVerificationExpires: verification.emailVerificationExpires,
         },
@@ -89,6 +90,7 @@ export const registerAccount = async (req: Request, res: Response) => {
         fullName,
         email,
         password: hashedPassword,
+        dateOfBirth,
         isEmailVerified: false,
         emailVerificationCode: verification.emailVerificationCode,
         emailVerificationExpires: verification.emailVerificationExpires,
@@ -344,9 +346,7 @@ export const loginToAccount = async (req: Request, res: Response) => {
         process.env.JWT_SECRET!,
         { expiresIn: '5m' },
       );
-      return res
-        .status(StatusCodes.OK)
-        .json({ requires2FA: true, tempToken });
+      return res.status(StatusCodes.OK).json({ requires2FA: true, tempToken });
     }
 
     const token = generateToken({
@@ -539,11 +539,9 @@ export const verifyTwoFactorCode = async (req: Request, res: Response) => {
     data: { twoFactorEnabled: true },
   });
 
-  res
-    .status(StatusCodes.OK)
-    .json({
-      msg: 'Uwierzytelnianie dwuetapowe włączone, nastąpi wylogowanie z konta',
-    });
+  res.status(StatusCodes.OK).json({
+    msg: 'Uwierzytelnianie dwuetapowe włączone, nastąpi wylogowanie z konta',
+  });
 };
 
 // 7. Wyłącz 2FA

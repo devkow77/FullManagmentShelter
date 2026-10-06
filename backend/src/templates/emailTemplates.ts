@@ -426,11 +426,11 @@ const adoptionStatusEmailCopy: Record<
     emoji: '✅',
     title: 'Wniosek wstępnie zaakceptowany',
     subject: (animalName) =>
-      `Wniosek zaakceptowany — zaproszenie na spotkanie (${animalName})`,
+      `Wniosek wstępnie zaakceptowany — oczekujemy na wizytę (${animalName})`,
     intro: (userName, animalName) =>
-      `Cześć ${userName}! Twój wniosek o adopcję zwierzęcia ${animalName} został wstępnie zaakceptowany.`,
+      `Cześć ${userName}! Twój wniosek o adopcję zwierzęcia ${animalName} został wstępnie zaakceptowany. Oczekujemy na ostateczną wizytę na żywo w schronisku.`,
     nextSteps:
-      '🏠 To jeszcze nie finalna adopcja — prosimy o przyjście do schroniska w celu finalizacji adopcji<br />📋 Ostateczna decyzja zapada po spotkaniu na żywo<br />⏳ Masz 7 dni od decyzji schroniska na przyjście do schroniska',
+      '🏠 To jeszcze nie finalna adopcja — ostateczna decyzja zapada dopiero po wizycie na żywo<br />📅 Prosimy o przyjście do schroniska w ciągu 7 dni od tej wiadomości<br />📋 Po spotkaniu pracownik sfinalizuje adopcję albo zakończy proces',
   },
   rejected: {
     emoji: '❌',
@@ -473,10 +473,11 @@ const adoptionStatusEmailCopy: Record<
   },
   cancelled_other_accepted: {
     emoji: 'ℹ️',
-    title: 'Wniosek anulowany',
-    subject: (animalName) => `Aktualizacja wniosku o adopcję — ${animalName}`,
+    title: 'Wniosek anulowany — przyjęto inny wniosek',
+    subject: (animalName) =>
+      `Wniosek anulowany — dla ${animalName} przyjęto inny wniosek`,
     intro: (userName, animalName) =>
-      `Cześć ${userName}! Twój wniosek o adopcję zwierzęcia ${animalName} został anulowany, ponieważ dla tego zwierzęcia zaakceptowano inny wniosek.`,
+      `Cześć ${userName}! Twój wniosek o adopcję zwierzęcia ${animalName} został anulowany, ponieważ schronisko wstępnie zaakceptowało inny wniosek o to samo zwierzę.`,
     nextSteps:
       '💚 Dziękujemy za zainteresowanie<br />🐕 Zapraszamy do przeglądania innych zwierząt szukających domu',
   },
@@ -561,8 +562,9 @@ export const adoptionStatusChangeText = (params: {
   const note = params.employeeNote?.trim()
     ? `\n\nWiadomość od schroniska:\n${params.employeeNote.trim()}`
     : '';
+  const nextSteps = copy.nextSteps.replace(/<br\s*\/?>/gi, '\n');
 
-  return `${copy.title}\n\n${copy.intro(params.userName, params.animalName)}${note}\n\nStatus wniosku: ${params.accountUrl}\n\nZespół Schroniska`;
+  return `${copy.title}\n\n${copy.intro(params.userName, params.animalName)}${note}\n\nCo dalej?\n${nextSteps}\n\nStatus wniosku: ${params.accountUrl}\n\nZespół Schroniska`;
 };
 
 export const getAdoptionStatusEmailSubject = (

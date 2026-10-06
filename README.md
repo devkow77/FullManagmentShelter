@@ -65,6 +65,7 @@ Dostęp bez logowania:
 
 Ścieżki: `/konto`, `/konto/formularz` <br />
 Testowe konta: `michal@example.com`, `katarzyna@example.com`
+Hasło: `Haslo12345.`
 
 ![Mobilny widok w panelu klienta](docs/mockups/mobile-user-mockup.png)
 
@@ -78,6 +79,7 @@ Testowe konta: `michal@example.com`, `katarzyna@example.com`
 
 Ścieżki m.in. `/pracownik/...`, wspólne `/admin/klatki`, `/admin/adopcje` <br />
 Testowe konta: `pracownik@example.com`, `pracownik2@example.com`
+Hasło: `Haslo12345.`
 
 ![Mobilny widok w panelu pracownika](docs/mockups/mobile-worker-mockup.png)
 
@@ -93,6 +95,7 @@ Testowe konta: `pracownik@example.com`, `pracownik2@example.com`
 ### Panel administratora (`ADMINISTRATOR`)
 
 Testowe konta: `admin@example.com`, `admin2@example.com`
+Hasło: `Haslo12345.`
 
 ![Mobilny widok w panelu admina](docs/mockups/mobile-admin-mockup.png)
 

@@ -12,6 +12,20 @@ import { Link } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import type { BlogPost, IconCard, LongestWaitingAnimal } from "@/types";
+import {
+  Heart,
+  Home,
+  PawPrint,
+  SearchCheck,
+  FileText,
+  UserPen,
+  Wallet,
+  Clock,
+  Hotel,
+  Megaphone,
+  Gift,
+  Dog,
+} from "lucide-react";
 
 interface AnimalTypeTile {
   name: string;
@@ -43,28 +57,28 @@ const animalTypes: AnimalTypeTile[] = [
 
 const adoptionsReasons: IconCard[] = [
   {
-    icon: "🐾",
+    icon: <PawPrint className="size-8 text-slate-600" />,
     title: "Ratujesz życie",
     bgColor: "bg-slate-100",
     description:
       "Każda adopcja to szansa dla zwierzaka na opuszczenie schroniska i znalezienie kochającego domu.",
   },
   {
-    icon: "❤️",
+    icon: <Heart className="size-8 text-red-600" />,
     bgColor: "bg-red-100",
     title: "Zyskujesz przyjaciela",
     description:
       "Zwierzęta ze schroniska są często bardzo oddane i wdzięczne za opiekę.",
   },
   {
-    icon: "💰",
+    icon: <Wallet className="size-8 text-yellow-600" />,
     bgColor: "bg-yellow-100",
     title: "Oszczędzasz pieniądze",
     description:
       "Wiele zwierząt jest już zaszczepionych, odrobaczonych i wykastrowanych.",
   },
   {
-    icon: "🏡",
+    icon: <Home className="size-8 text-green-600" />,
     bgColor: "bg-green-100",
     title: "Pomagasz zwierzętom",
     description:
@@ -74,42 +88,42 @@ const adoptionsReasons: IconCard[] = [
 
 const adoptionProcess: IconCard[] = [
   {
-    icon: "🔍",
+    icon: <SearchCheck className="size-8 text-blue-600" />,
     bgColor: "bg-blue-100",
     title: "Wybierz zwierzę",
     description:
       "Przejrzyj nasze zwierzaki i znajdź pupila dopasowanego do Twoich warunków życia, stylu dnia oraz ewentualnych alergii.",
   },
   {
-    icon: "👤",
+    icon: <UserPen className="size-8 text-slate-600" />,
     bgColor: "bg-slate-100",
     title: "Uzupełnij profil",
     description:
       "Zaloguj się na swoje konto i wypełnij wymagane dane osobowe potrzebne do rozpoczęcia procesu adopcji.",
   },
   {
-    icon: "📝",
+    icon: <FileText className="size-8 text-yellow-600" />,
     bgColor: "bg-yellow-100",
     title: "Zgłoś adopcję",
     description:
       "Wyślij wniosek adopcyjny dla wybranego zwierzęcia — to szybki i prosty formalny krok.",
   },
   {
-    icon: "⏳",
+    icon: <Clock className="size-8 text-orange-600" />,
     bgColor: "bg-orange-100",
     title: "Czekaj na odpowiedź",
     description:
       "Nasz zespół rozpatrzy Twój wniosek i skontaktuje się z Tobą w sprawie dalszych kroków.",
   },
   {
-    icon: "🏠",
+    icon: <Hotel className="size-8 text-green-600" />,
     bgColor: "bg-green-100",
     title: "Odwiedź schronisko",
     description:
       "Po wstępnej akceptacji przyjdź osobiście na rozmowę i odbiór pupila.",
   },
   {
-    icon: "❤️",
+    icon: <Heart className="size-8 text-red-600" />,
     bgColor: "bg-red-100",
     title: "Ciesz się rodziną",
     description:
@@ -119,28 +133,28 @@ const adoptionProcess: IconCard[] = [
 
 const faqFeatures: IconCard[] = [
   {
-    icon: "📢",
+    icon: <Megaphone className="size-8 text-blue-600" />,
     title: "Uświadamiaj innych",
     bgColor: "bg-blue-100",
     description:
       "Zachęcaj innych do adopcji – wiele osób nawet nie wie, że może znaleźć swojego pupila w schronisku.",
   },
   {
-    icon: "🎁",
+    icon: <Gift className="size-8 text-yellow-600" />,
     title: "Organizuj zbiórki",
     bgColor: "bg-yellow-100",
     description:
       "Możesz zorganizować zbiórkę karmy lub akcesoriów. Daj nam znać – pomożemy ją nagłośnić.",
   },
   {
-    icon: "🐕",
+    icon: <Dog className="size-8 text-green-600" />,
     title: "Pomagaj na miejscu",
     bgColor: "bg-green-100",
     description:
       "Wyprowadzanie psów, pielęgnacja i socjalizacja to ogromna pomoc dla zwierząt w schronisku.",
   },
   {
-    icon: "❤️",
+    icon: <Heart className="size-8 text-red-600" />,
     title: "Wesprzyj darowizną",
     bgColor: "bg-red-100",
     description:

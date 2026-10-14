@@ -1,45 +1,52 @@
 import { useEffect, type ReactNode } from "react";
 import { Container } from "@/components/ui";
 import type { IconCard } from "@/types";
-
+import {
+  Handshake,
+  Megaphone,
+  PawPrint,
+  Wallet,
+  Gift,
+  Hotel,
+} from "lucide-react";
 const helpOptions: IconCard[] = [
   {
-    icon: "🐾",
+    icon: <PawPrint className="size-10 text-slate-600" />,
     title: "Adoptuj zwierzę",
     bgColor: "bg-slate-100",
     description:
       "Daj zwierzęciu drugi dom i szansę na nowe, lepsze życie u boku kochającego opiekuna.",
   },
   {
-    icon: "🤝",
+    icon: <Handshake className="size-10 text-red-600" />,
     bgColor: "bg-red-100",
     title: "Zostań wolontariuszem",
     description:
       "Pomagaj w schronisku – wyprowadzaj psy, opiekuj się zwierzętami i wspieraj ich codzienne potrzeby.",
   },
   {
-    icon: "💸",
+    icon: <Wallet className="size-10 text-yellow-600" />,
     bgColor: "bg-yellow-100",
     title: "Wesprzyj finansowo",
     description:
       "Twoja darowizna pomaga pokryć koszty leczenia, karmy i utrzymania zwierząt.",
   },
   {
-    icon: "🛍️",
+    icon: <Gift className="size-10 text-green-600" />,
     bgColor: "bg-green-100",
     title: "Przekaż dary",
     description:
       "Karma, koce, zabawki czy smycze – każda pomoc rzeczowa jest dla nas bardzo cenna.",
   },
   {
-    icon: "🏠",
+    icon: <Hotel className="size-10 text-blue-600" />,
     bgColor: "bg-blue-100",
     title: "Dom tymczasowy",
     description:
       "Zapewnij zwierzęciu opiekę tymczasową i pomóż mu przygotować się do adopcji.",
   },
   {
-    icon: "📣",
+    icon: <Megaphone className="size-8 text-indigo-600" />,
     bgColor: "bg-purple-100",
     title: "Udostępniaj",
     description:

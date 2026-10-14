@@ -2,7 +2,7 @@ import type { IconType } from "react-icons";
 
 /** Kafelek informacyjny z ikoną, używany w sekcjach marketingowych. */
 export type IconCard = {
-  icon: string;
+  icon: React.ReactNode;
   bgColor: string;
   title: string;
   description: string;

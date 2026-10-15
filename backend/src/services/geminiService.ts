@@ -6,7 +6,8 @@ import type {
   ChatReplyResult,
 } from '../types';
 
-const DEFAULT_MODEL = 'gemini-3.6-flash';
+const DEFAULT_MODEL = 'gemini-3.5-flash';
+const FALLBACK_MODELS = ['gemini-3.5-flash-lite', 'gemini-3.1-flash-lite'];
 
 export const OTHER_CATEGORY_MESSAGE =
   'Jestem asystentem do udzielania informacji odnośnie schroniska lub doboru zwierzęcia do adopcji na podstawie podanych parametrów.';
@@ -113,8 +114,11 @@ export const replyWithGemini = async (
     throw new Error('MISSING_GEMINI_API_KEY');
   }
 
-  const model = process.env.GEMINI_MODEL || DEFAULT_MODEL;
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`;
+  const primaryModel = process.env.GEMINI_MODEL || DEFAULT_MODEL;
+  const models = [
+    primaryModel,
+    ...FALLBACK_MODELS.filter((model) => model !== primaryModel),
+  ];
 
   const historyBlock =
     history.length > 0
@@ -137,45 +141,63 @@ ${JSON.stringify(catalog)}
 ${historyBlock}Aktualna wiadomość użytkownika:
 ${userMessage}`;
 
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      contents: [
-        {
-          role: 'user',
-          parts: [{ text: prompt }],
-        },
-      ],
-      generationConfig: {
-        temperature: 0.2,
-        responseMimeType: 'application/json',
-      },
-    }),
-  });
+  let lastStatus = 0;
 
-  if (!response.ok) {
+  for (const model of models) {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(apiKey)}`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        contents: [
+          {
+            role: 'user',
+            parts: [{ text: prompt }],
+          },
+        ],
+        generationConfig: {
+          temperature: 0.2,
+          responseMimeType: 'application/json',
+        },
+      }),
+    });
+
+    if (response.ok) {
+      const data = (await response.json()) as {
+        candidates?: Array<{
+          content?: { parts?: Array<{ text?: string }> };
+        }>;
+      };
+
+      const content = data.candidates?.[0]?.content?.parts
+        ?.map((part) => part.text ?? '')
+        .join('')
+        .trim();
+
+      if (content) {
+        return parseChatResult(content);
+      }
+
+      console.error('Gemini API empty response:', model);
+      continue;
+    }
+
+    lastStatus = response.status;
     const errorText = await response.text().catch(() => '');
-    console.error('Gemini API error:', response.status, errorText);
-    throw new Error('GEMINI_REQUEST_FAILED');
+    console.error('Gemini API error:', model, response.status, errorText);
+
+    const retryable =
+      response.status === 429 ||
+      response.status === 500 ||
+      response.status === 503;
+    if (!retryable) break;
   }
 
-  const data = (await response.json()) as {
-    candidates?: Array<{
-      content?: { parts?: Array<{ text?: string }> };
-    }>;
-  };
-
-  const content = data.candidates?.[0]?.content?.parts
-    ?.map((part) => part.text ?? '')
-    .join('')
-    .trim();
-
-  if (!content) {
+  if (lastStatus === 0) {
     throw new Error('EMPTY_GEMINI_RESPONSE');
   }
 
-  return parseChatResult(content);
+  throw new Error('GEMINI_REQUEST_FAILED');
 };

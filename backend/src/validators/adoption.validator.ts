@@ -10,11 +10,11 @@ export const createAdoptionSchema = z.object({
 
 export const editAdoptionStatusSchema = z.object({
   status: z.enum([
-    "OCZEKUJACA",
-    "ZAAKCEPTOWANA",
-    "ODRZUCONA",
-    "ANULOWANA",
-    "ZAKONCZONA",
+    "OCZEKUJACY",
+    "OCZEKUJACY_NA_WIZYTE",
+    "ODRZUCONY",
+    "ANULOWANY",
+    "ZAAKCEPTOWANY",
   ]),
   employeeNote: z
     .string()

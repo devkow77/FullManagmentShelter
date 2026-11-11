@@ -91,7 +91,7 @@ describe('Adopcja happy-path - Testy integracyjne', () => {
 
   it('Admin akceptuje wniosek — zaproszenie na spotkanie, nie finalna adopcja', async () => {
     const res = await adminAgent.patch(`/api/adoptions/${adoptionId}`).send({
-      status: 'ZAAKCEPTOWANA',
+      status: 'OCZEKUJACY_NA_WIZYTE',
       employeeNote: 'Warunki wstępne OK — zapraszamy na spotkanie.',
     });
 
@@ -101,7 +101,7 @@ describe('Adopcja happy-path - Testy integracyjne', () => {
     const adoption = await prisma.adoption.findUnique({
       where: { id: adoptionId },
     });
-    expect(adoption?.status).toBe('ZAAKCEPTOWANA');
+    expect(adoption?.status).toBe('OCZEKUJACY_NA_WIZYTE');
 
     const animal = await prisma.animal.findUnique({ where: { id: animalId } });
     expect(animal?.status).toBe('W_TRAKCIE_ADOPCJI');
@@ -112,7 +112,7 @@ describe('Adopcja happy-path - Testy integracyjne', () => {
       where: { id: otherAdoptionId },
     });
 
-    expect(otherAdoption?.status).toBe('ANULOWANA');
+    expect(otherAdoption?.status).toBe('ANULOWANY');
     expect(otherAdoption?.employeeNote).toContain(
       'zaakceptowano inny wniosek adopcyjny',
     );
@@ -120,7 +120,7 @@ describe('Adopcja happy-path - Testy integracyjne', () => {
 
   it('Po spotkaniu admin finalizuje adopcję', async () => {
     const res = await adminAgent.patch(`/api/adoptions/${adoptionId}`).send({
-      status: 'ZAKONCZONA',
+      status: 'ZAAKCEPTOWANY',
       employeeNote: 'Spotkanie przebiegło pomyślnie — adopcja sfinalizowana.',
     });
 
@@ -129,7 +129,7 @@ describe('Adopcja happy-path - Testy integracyjne', () => {
     const adoption = await prisma.adoption.findUnique({
       where: { id: adoptionId },
     });
-    expect(adoption?.status).toBe('ZAKONCZONA');
+    expect(adoption?.status).toBe('ZAAKCEPTOWANY');
 
     const animal = await prisma.animal.findUnique({ where: { id: animalId } });
     expect(animal?.status).toBe('ADOPTOWANY');

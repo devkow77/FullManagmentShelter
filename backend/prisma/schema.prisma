@@ -95,8 +95,8 @@ enum AnimalSize {
 
 // Enum status zwierzęcia
 enum AnimalStatus {
+  NOWY
   SZUKA_DOMU
-  ZNALEZIONY
   W_TRAKCIE_ADOPCJI
   ADOPTOWANY
 }
@@ -151,7 +151,7 @@ model Animal {
   lovesAffection          Boolean @default(false) 
   poorlyToleratesShelter  Boolean @default(false) 
 
-  status           AnimalStatus  @default(ZNALEZIONY) 
+  status           AnimalStatus  @default(NOWY) 
   healthStatus     AnimalHealthStatus  @default(ZDROWY) 
   nextVisitDate    DateTime?     
   foundAt          DateTime      
@@ -243,11 +243,11 @@ model DailyZoneAssignment {
 
 // Enum status adopcji
 enum AdoptionStatus {
-  OCZEKUJACA 
-  ZAAKCEPTOWANA 
-  ODRZUCONA 
-  ANULOWANA 
-  ZAKONCZONA 
+  OCZEKUJACY
+  OCZEKUJACY_NA_WIZYTE
+  ZAAKCEPTOWANY 
+  ODRZUCONY 
+  ANULOWANY 
 }
 
 // Model Adopcji
@@ -259,7 +259,7 @@ model Adoption {
   user        User            @relation(fields: [userId], references: [id], onDelete: Cascade) 
   animal      Animal          @relation(fields: [animalId], references: [id], onDelete: Cascade) 
 
-  status      AdoptionStatus  @default(OCZEKUJACA) 
+  status      AdoptionStatus  @default(OCZEKUJACY) 
 
   message     String?         
   employeeNote String?       

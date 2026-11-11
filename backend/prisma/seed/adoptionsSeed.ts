@@ -30,13 +30,13 @@ const adoptionsSeed = async () => {
     {
       userId: primaryUser.id,
       animalId: animals[0]!.id,
-      status: AdoptionStatus.OCZEKUJACA,
+      status: AdoptionStatus.OCZEKUJACY,
       message: 'Mam duży ogród i doświadczenie z psami.',
     },
     {
       userId: secondaryUser.id,
       animalId: animals[1]!.id,
-      status: AdoptionStatus.ZAAKCEPTOWANA,
+      status: AdoptionStatus.OCZEKUJACY_NA_WIZYTE,
       message: 'Szukam spokojnego kota do mieszkania.',
       employeeNote: 'Spotkanie wstępne pozytywne — czeka na odbiór.',
       processedById: worker.id,
@@ -45,7 +45,7 @@ const adoptionsSeed = async () => {
     {
       userId: primaryUser.id,
       animalId: animals[2]!.id,
-      status: AdoptionStatus.ODRZUCONA,
+      status: AdoptionStatus.ODRZUCONY,
       message: 'Chciałbym adoptować królika dla dzieci.',
       employeeNote: 'Brak odpowiednich warunków hodowlanych.',
       processedById: worker.id,
@@ -53,7 +53,7 @@ const adoptionsSeed = async () => {
     {
       userId: secondaryUser.id,
       animalId: animals[3]!.id,
-      status: AdoptionStatus.ANULOWANA,
+      status: AdoptionStatus.ANULOWANY,
       message: 'Niestety zmieniła mi się sytuacja życiowa.',
       employeeNote: 'Anulowane na prośbę adoptującego.',
       processedById: worker.id,
@@ -61,7 +61,7 @@ const adoptionsSeed = async () => {
     {
       userId: primaryUser.id,
       animalId: animals[7]!.id,
-      status: AdoptionStatus.ZAKONCZONA,
+      status: AdoptionStatus.ZAAKCEPTOWANY,
       message: 'Kot został odebrany — wszystko w porządku.',
       employeeNote: 'Odbiór potwierdzony, dokumentacja podpisana.',
       processedById: worker.id,
@@ -69,7 +69,7 @@ const adoptionsSeed = async () => {
     {
       userId: secondaryUser.id,
       animalId: animals[4]!.id,
-      status: AdoptionStatus.OCZEKUJACA,
+      status: AdoptionStatus.OCZEKUJACY,
       message: 'Mam doświadczenie z egzotycznymi zwierzętami.',
     },
   ];

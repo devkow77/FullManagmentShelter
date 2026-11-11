@@ -2,12 +2,12 @@ import type { AdoptionSurvey } from "./user";
 
 /** Decyzje dostępne przed spotkaniem adopcyjnym. */
 export type InitialDecisionStatus =
-  | "ZAAKCEPTOWANA"
-  | "ODRZUCONA"
-  | "ANULOWANA";
+  | "OCZEKUJACY_NA_WIZYTE"
+  | "ODRZUCONY"
+  | "ANULOWANY";
 
 /** Decyzje dostępne po spotkaniu adopcyjnym. */
-export type PostMeetingDecisionStatus = "ZAKONCZONA" | "ANULOWANA";
+export type PostMeetingDecisionStatus = "ZAAKCEPTOWANY" | "ANULOWANY";
 
 export type DecisionStatus =
   | InitialDecisionStatus

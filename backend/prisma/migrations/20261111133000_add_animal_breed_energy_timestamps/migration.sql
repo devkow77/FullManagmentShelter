@@ -1,0 +1,8 @@
+-- CreateEnum
+CREATE TYPE "AnimalEnergyLevel" AS ENUM ('NISKI', 'SREDNI', 'WYSOKI');
+
+-- AlterTable
+ALTER TABLE "Animal" ADD COLUMN "breed" TEXT NOT NULL DEFAULT 'Mieszaniec',
+ADD COLUMN "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN "energyLevel" "AnimalEnergyLevel" NOT NULL DEFAULT 'SREDNI',
+ADD COLUMN "updatedAt" TIMESTAMP(3) NOT NULL;

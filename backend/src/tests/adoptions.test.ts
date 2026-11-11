@@ -54,7 +54,7 @@ describe('Adopcje - Testy integracyjne', () => {
       buildAnimalPayload({
         name: 'Puszek',
         cageId: cageB.id,
-        status: 'ZNALEZIONY',
+        status: 'NOWY',
         description: 'Zwierzę które jeszcze nie szuka domu w schronisku.',
       }),
     );
@@ -163,9 +163,9 @@ describe('Adopcje - Testy integracyjne', () => {
     });
 
     it('Filtruje oczekujące wnioski', async () => {
-      // Sprawdza filtrowanie wniosków po statusie OCZEKUJACA.
+      // Sprawdza filtrowanie wniosków po statusie OCZEKUJACY.
       const res = await adminAgent.get(
-        '/api/adoptions?page=1&limit=1&status=OCZEKUJACA',
+        '/api/adoptions?page=1&limit=1&status=OCZEKUJACY',
       );
 
       expect(res.status).toBe(StatusCodes.OK);
@@ -190,7 +190,7 @@ describe('Adopcje - Testy integracyjne', () => {
 
       expect(res.status).toBe(StatusCodes.OK);
       expect(res.body.id).toBe(adoptionId);
-      expect(res.body.status).toBe('OCZEKUJACA');
+      expect(res.body.status).toBe('OCZEKUJACY');
     });
 
     it('Zwraca 404 dla nieistniejącego wniosku', async () => {
@@ -218,10 +218,10 @@ describe('Adopcje - Testy integracyjne', () => {
         where: { id: adoptionId },
         select: { status: true },
       });
-      expect(adoption?.status).toBe('ANULOWANA');
+      expect(adoption?.status).toBe('ANULOWANY');
     });
 
-    it('Nie pozwala anulować wniosku, który nie jest OCZEKUJACA', async () => {
+    it('Nie pozwala anulować wniosku, który nie jest OCZEKUJACY', async () => {
       const res = await userAgent.patch(`/api/adoptions/${adoptionId}/cancel`);
 
       expect(res.status).toBe(StatusCodes.BAD_REQUEST);
@@ -245,7 +245,7 @@ describe('Adopcje - Testy integracyjne', () => {
     it('Zwraca 400 bez wymaganej notatki', async () => {
       // Sprawdza walidację danych wejściowych (400).
       const res = await adminAgent.patch(`/api/adoptions/${adoptionId}`).send({
-        status: 'ZAAKCEPTOWANA',
+        status: 'OCZEKUJACY_NA_WIZYTE',
       });
 
       expect(res.status).toBe(StatusCodes.BAD_REQUEST);
@@ -255,7 +255,7 @@ describe('Adopcje - Testy integracyjne', () => {
     it('Zmienia status oczekującego wniosku', async () => {
       // Sprawdza poprawną aktualizację rekordu.
       const res = await adminAgent.patch(`/api/adoptions/${adoptionId}`).send({
-        status: 'ODRZUCONA',
+        status: 'ODRZUCONY',
         employeeNote: 'Brak odpowiednich warunków mieszkaniowych.',
       });
 
@@ -263,10 +263,10 @@ describe('Adopcje - Testy integracyjne', () => {
       expect(res.body.msg).toBe('Adopcja została zaktualizowana!');
     });
 
-    it('Nie pozwala zmienić wniosku, który nie jest OCZEKUJACA', async () => {
-      // Sprawdza, że status można zmienić tylko dla wniosku OCZEKUJACA.
+    it('Nie pozwala zmienić wniosku, który nie jest OCZEKUJACY', async () => {
+      // Sprawdza, że status można zmienić tylko dla wniosku OCZEKUJACY.
       const res = await adminAgent.patch(`/api/adoptions/${adoptionId}`).send({
-        status: 'ZAAKCEPTOWANA',
+        status: 'OCZEKUJACY_NA_WIZYTE',
         employeeNote: 'Kolejna zmiana statusu.',
       });
 

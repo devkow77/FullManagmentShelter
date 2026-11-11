@@ -225,7 +225,7 @@ export const getShelterStats = async (_req: Request, res: Response) => {
       animalsByStatus.find((row) => row.status === AnimalStatus.SZUKA_DOMU)
         ?._count._all ?? 0;
     const pendingAdoptions =
-      adoptionsByStatus.find((row) => row.status === AdoptionStatus.OCZEKUJACA)
+      adoptionsByStatus.find((row) => row.status === AdoptionStatus.OCZEKUJACY)
         ?._count._all ?? 0;
 
     return res.status(StatusCodes.OK).json({
@@ -249,7 +249,7 @@ export const getShelterStats = async (_req: Request, res: Response) => {
           total: animalTotal,
           seekingHome,
           found:
-            animalsByStatus.find((row) => row.status === AnimalStatus.ZNALEZIONY)
+            animalsByStatus.find((row) => row.status === AnimalStatus.NOWY)
               ?._count._all ?? 0,
           inAdoption:
             animalsByStatus.find(
@@ -292,19 +292,19 @@ export const getShelterStats = async (_req: Request, res: Response) => {
           pending: pendingAdoptions,
           accepted:
             adoptionsByStatus.find(
-              (row) => row.status === AdoptionStatus.ZAAKCEPTOWANA,
+              (row) => row.status === AdoptionStatus.OCZEKUJACY_NA_WIZYTE,
             )?._count._all ?? 0,
           rejected:
             adoptionsByStatus.find(
-              (row) => row.status === AdoptionStatus.ODRZUCONA,
+              (row) => row.status === AdoptionStatus.ODRZUCONY,
             )?._count._all ?? 0,
           canceled:
             adoptionsByStatus.find(
-              (row) => row.status === AdoptionStatus.ANULOWANA,
+              (row) => row.status === AdoptionStatus.ANULOWANY,
             )?._count._all ?? 0,
           completed:
             adoptionsByStatus.find(
-              (row) => row.status === AdoptionStatus.ZAKONCZONA,
+              (row) => row.status === AdoptionStatus.ZAAKCEPTOWANY,
             )?._count._all ?? 0,
         },
         byStatus: countByEnum(

@@ -107,9 +107,9 @@ export const createAdoption = async (req: AuthRequest, res: Response) => {
         animalId,
         status: {
           in: [
-            AdoptionStatus.OCZEKUJACA,
-            AdoptionStatus.ZAAKCEPTOWANA,
-            AdoptionStatus.ODRZUCONA,
+            AdoptionStatus.OCZEKUJACY,
+            AdoptionStatus.OCZEKUJACY_NA_WIZYTE,
+            AdoptionStatus.ODRZUCONY,
           ],
         },
       },
@@ -117,7 +117,7 @@ export const createAdoption = async (req: AuthRequest, res: Response) => {
     });
 
     if (existingAdoption) {
-      if (existingAdoption.status === AdoptionStatus.ODRZUCONA) {
+      if (existingAdoption.status === AdoptionStatus.ODRZUCONY) {
         return res.status(StatusCodes.CONFLICT).json({
           msg: 'Twój poprzedni wniosek o adopcję tego zwierzęcia został odrzucony. Nie możesz złożyć ponownego wniosku.',
         });
@@ -310,7 +310,7 @@ export const cancelOwnAdoption = async (req: AuthRequest, res: Response) => {
       });
     }
 
-    if (adoption.status !== AdoptionStatus.OCZEKUJACA) {
+    if (adoption.status !== AdoptionStatus.OCZEKUJACY) {
       return res.status(StatusCodes.BAD_REQUEST).json({
         msg: 'Możesz anulować tylko oczekujący wniosek adopcyjny!',
       });
@@ -319,7 +319,7 @@ export const cancelOwnAdoption = async (req: AuthRequest, res: Response) => {
     await prisma.adoption.update({
       where: { id: numericId },
       data: {
-        status: AdoptionStatus.ANULOWANA,
+        status: AdoptionStatus.ANULOWANY,
         employeeNote: 'Wniosek anulowany przez wnioskodawcę.',
       },
     });
@@ -386,14 +386,14 @@ export const changeAdoptionStatus = async (req: Request, res: Response) => {
     const currentStatus = findAdoption.status;
 
     const allowedTransitions: Record<string, AdoptionStatus[]> = {
-      [AdoptionStatus.OCZEKUJACA]: [
-        AdoptionStatus.ZAAKCEPTOWANA,
-        AdoptionStatus.ODRZUCONA,
-        AdoptionStatus.ANULOWANA,
+      [AdoptionStatus.OCZEKUJACY]: [
+        AdoptionStatus.OCZEKUJACY_NA_WIZYTE,
+        AdoptionStatus.ODRZUCONY,
+        AdoptionStatus.ANULOWANY,
       ],
-      [AdoptionStatus.ZAAKCEPTOWANA]: [
-        AdoptionStatus.ZAKONCZONA,
-        AdoptionStatus.ANULOWANA,
+      [AdoptionStatus.OCZEKUJACY_NA_WIZYTE]: [
+        AdoptionStatus.ZAAKCEPTOWANY,
+        AdoptionStatus.ANULOWANY,
       ],
     };
 
@@ -406,11 +406,11 @@ export const changeAdoptionStatus = async (req: Request, res: Response) => {
     }
 
     const otherPendingApplicants =
-      status === AdoptionStatus.ZAAKCEPTOWANA
+      status === AdoptionStatus.OCZEKUJACY_NA_WIZYTE
         ? await prisma.adoption.findMany({
             where: {
               animalId: findAdoption.animalId,
-              status: AdoptionStatus.OCZEKUJACA,
+              status: AdoptionStatus.OCZEKUJACY,
               id: { not: numericId },
             },
             select: {
@@ -431,7 +431,7 @@ export const changeAdoptionStatus = async (req: Request, res: Response) => {
           status,
           employeeNote,
           message,
-          ...(status === AdoptionStatus.ZAAKCEPTOWANA
+          ...(status === AdoptionStatus.OCZEKUJACY_NA_WIZYTE
             ? { acceptedAt: new Date() }
             : {}),
         },
@@ -439,7 +439,7 @@ export const changeAdoptionStatus = async (req: Request, res: Response) => {
 
       // Akceptacja wniosku → zaproszenie na spotkanie,
       // zwierzę w trakcie adopcji, pozostałe oczekujące wnioski anulowane
-      if (status === AdoptionStatus.ZAAKCEPTOWANA) {
+      if (status === AdoptionStatus.OCZEKUJACY_NA_WIZYTE) {
         await tx.animal.update({
           where: { id: findAdoption.animalId },
           data: { status: AnimalStatus.W_TRAKCIE_ADOPCJI },
@@ -448,11 +448,11 @@ export const changeAdoptionStatus = async (req: Request, res: Response) => {
         await tx.adoption.updateMany({
           where: {
             animalId: findAdoption.animalId,
-            status: AdoptionStatus.OCZEKUJACA,
+            status: AdoptionStatus.OCZEKUJACY,
             id: { not: numericId },
           },
           data: {
-            status: AdoptionStatus.ANULOWANA,
+            status: AdoptionStatus.ANULOWANY,
             employeeNote:
               'Wniosek anulowany automatycznie — dla tego zwierzęcia zaakceptowano inny wniosek adopcyjny.',
           },
@@ -460,7 +460,7 @@ export const changeAdoptionStatus = async (req: Request, res: Response) => {
       }
 
       // Finalizacja po spotkaniu → zwierzę adoptowane, zwalnia klatkę
-      if (status === AdoptionStatus.ZAKONCZONA) {
+      if (status === AdoptionStatus.ZAAKCEPTOWANY) {
         await tx.animal.update({
           where: { id: findAdoption.animalId },
           data: { status: AnimalStatus.ADOPTOWANY, cageId: null },
@@ -469,8 +469,8 @@ export const changeAdoptionStatus = async (req: Request, res: Response) => {
 
       // Anulacja po akceptacji (np. nieudane spotkanie) → zwierzę znów szuka domu
       if (
-        status === AdoptionStatus.ANULOWANA &&
-        currentStatus === AdoptionStatus.ZAAKCEPTOWANA
+        status === AdoptionStatus.ANULOWANY &&
+        currentStatus === AdoptionStatus.OCZEKUJACY_NA_WIZYTE
       ) {
         await tx.animal.update({
           where: { id: findAdoption.animalId },
@@ -480,12 +480,12 @@ export const changeAdoptionStatus = async (req: Request, res: Response) => {
     });
 
     const resolveEmailKind = (): AdoptionStatusEmailKind => {
-      if (status === AdoptionStatus.ZAAKCEPTOWANA) return 'accepted';
-      if (status === AdoptionStatus.ODRZUCONA) return 'rejected';
-      if (status === AdoptionStatus.ZAKONCZONA) return 'completed';
+      if (status === AdoptionStatus.OCZEKUJACY_NA_WIZYTE) return 'accepted';
+      if (status === AdoptionStatus.ODRZUCONY) return 'rejected';
+      if (status === AdoptionStatus.ZAAKCEPTOWANY) return 'completed';
       if (
-        status === AdoptionStatus.ANULOWANA &&
-        currentStatus === AdoptionStatus.ZAAKCEPTOWANA
+        status === AdoptionStatus.ANULOWANY &&
+        currentStatus === AdoptionStatus.OCZEKUJACY_NA_WIZYTE
       ) {
         return 'cancelled_after_meeting';
       }

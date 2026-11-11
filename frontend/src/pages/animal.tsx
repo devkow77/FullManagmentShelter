@@ -29,6 +29,7 @@ import {
   formatAnimalType,
   formatShelterVisitCountdown,
   getDaysUntilShelterVisit,
+  styleAdoptionStatus,
 } from "@/lib/utils";
 import type { Adoption, Animal, AnimalHealthStatus, OwnProfile } from "@/types";
 import { AnimalCard } from "@/components/shared";
@@ -232,19 +233,19 @@ const AnimalPage = () => {
   }, [animal]);
 
   const canAdopt = animal?.status === "SZUKA_DOMU";
-  const isFound = animal?.status === "ZNALEZIONY";
+  const isFound = animal?.status === "NOWY";
   const daysUntilAvailable =
     isFound && animal?.foundAt ? getDaysUntilAvailable(animal.foundAt) : null;
 
   const canSubmitAdoption = user?.role === "UZYTKOWNIK";
-  const hasPendingAdoption = existingAdoptionForAnimal?.status === "OCZEKUJACA";
+  const hasPendingAdoption = existingAdoptionForAnimal?.status === "OCZEKUJACY";
   const hasAcceptedAdoption =
-    existingAdoptionForAnimal?.status === "ZAAKCEPTOWANA";
-  const hasRejectedAdoption = existingAdoptionForAnimal?.status === "ODRZUCONA";
+    existingAdoptionForAnimal?.status === "OCZEKUJACY_NA_WIZYTE";
+  const hasRejectedAdoption = existingAdoptionForAnimal?.status === "ODRZUCONY";
   const hasCancelledAdoption =
-    existingAdoptionForAnimal?.status === "ANULOWANA";
+    existingAdoptionForAnimal?.status === "ANULOWANY";
   const hasCompletedAdoption =
-    existingAdoptionForAnimal?.status === "ZAKONCZONA";
+    existingAdoptionForAnimal?.status === "ZAAKCEPTOWANY";
   const isAlreadyAdopted = animal?.status === "ADOPTOWANY";
   const acceptedShelterVisitDays =
     hasAcceptedAdoption &&
@@ -413,7 +414,9 @@ const AnimalPage = () => {
                   className="pointer-events-none absolute inset-0 z-10 bg-black/30"
                   aria-hidden="true"
                 />
-                <span className="pointer-events-none absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-green-300 bg-green-100 px-6 py-3 text-xs font-semibold text-green-900 sm:text-sm">
+                <span
+                  className={`${styleAdoptionStatus("ZAAKCEPTOWANY")} pointer-events-none absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 rounded-2xl px-6 py-3 text-xs font-semibold sm:text-sm`}
+                >
                   Adoptowany
                 </span>
               </>

@@ -60,7 +60,7 @@ const AddAnimalPage = () => {
       traits: "",
       dateOfBirth: new Date().toISOString().split("T")[0],
       description: "",
-      status: "ZNALEZIONY",
+      status: "NOWY",
       healthStatus: "ZDROWY",
       nextVisitDate: "",
       foundAt: new Date().toISOString().split("T")[0],

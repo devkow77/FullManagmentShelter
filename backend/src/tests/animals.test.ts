@@ -31,7 +31,7 @@ const buildAnimalPayload = (
   traits: 'Przyjacielski, głośny',
   dateOfBirth: yearsAgoIso(3),
   description: 'Znaleziony przy drodze krajowej, spokojny i ufny.',
-  status: 'ZNALEZIONY',
+  status: 'NOWY',
   healthStatus: 'ZDROWY',
   nextVisitDate: null,
   foundAt: new Date('2026-01-15T12:00:00.000Z').toISOString(),

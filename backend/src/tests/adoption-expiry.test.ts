@@ -48,7 +48,7 @@ describe('Wygasanie zaakceptowanych wniosków adopcyjnych', () => {
     adoptionId = adoptionRes.body.id;
 
     const acceptRes = await adminAgent.patch(`/api/adoptions/${adoptionId}`).send({
-      status: 'ZAAKCEPTOWANA',
+      status: 'OCZEKUJACY_NA_WIZYTE',
       employeeNote: 'Zapraszamy na spotkanie.',
     });
     expect(acceptRes.status).toBe(StatusCodes.OK);
@@ -66,7 +66,7 @@ describe('Wygasanie zaakceptowanych wniosków adopcyjnych', () => {
       where: { id: adoptionId },
       select: { status: true },
     });
-    expect(adoption?.status).toBe('ZAAKCEPTOWANA');
+    expect(adoption?.status).toBe('OCZEKUJACY_NA_WIZYTE');
   });
 
   it('Po upływie 7 dni anuluje wniosek i wraca zwierzę do SZUKA_DOMU', async () => {
@@ -85,7 +85,7 @@ describe('Wygasanie zaakceptowanych wniosków adopcyjnych', () => {
       where: { id: adoptionId },
       select: { status: true, employeeNote: true },
     });
-    expect(adoption?.status).toBe('ANULOWANA');
+    expect(adoption?.status).toBe('ANULOWANY');
     expect(adoption?.employeeNote).toContain('7-dniowy termin');
 
     const animal = await prisma.animal.findUnique({

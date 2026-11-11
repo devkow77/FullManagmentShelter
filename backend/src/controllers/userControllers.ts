@@ -307,10 +307,10 @@ export const getWorkerStats = async (_req: Request, res: Response) => {
         processedById: { not: null },
         status: {
           in: [
-            AdoptionStatus.ZAAKCEPTOWANA,
-            AdoptionStatus.ODRZUCONA,
-            AdoptionStatus.ANULOWANA,
-            AdoptionStatus.ZAKONCZONA,
+            AdoptionStatus.OCZEKUJACY_NA_WIZYTE,
+            AdoptionStatus.ODRZUCONY,
+            AdoptionStatus.ANULOWANY,
+            AdoptionStatus.ZAAKCEPTOWANY,
           ],
         },
       },

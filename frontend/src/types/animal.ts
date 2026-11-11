@@ -10,7 +10,7 @@ export type AnimalEnergyLevel = "NISKI" | "SREDNI" | "WYSOKI";
 
 export type AnimalStatus =
   | "SZUKA_DOMU"
-  | "ZNALEZIONY"
+  | "NOWY"
   | "W_TRAKCIE_ADOPCJI"
   | "ADOPTOWANY";
 

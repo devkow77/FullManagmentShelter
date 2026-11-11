@@ -16,7 +16,7 @@ const getFoundAnimalsPage = async (pageParam: number) => {
     page: String(pageParam),
     limit: String(PAGE_SIZE),
     sort: "foundAt:asc",
-    status: "ZNALEZIONY",
+    status: "NOWY",
   });
 
   const res = await axios.get<PaginatedResponse<FoundAnimal>>(
@@ -174,9 +174,9 @@ const FoundAnimalCard = ({ foundAnimal }: { foundAnimal: FoundAnimal }) => {
     >
       <div className="relative grid aspect-video place-items-center overflow-hidden rounded-xl bg-gray-100">
         <span
-          className={`${styleAnimalStatus("ZNALEZIONY")} absolute top-3 right-3 z-2 rounded-2xl px-4 py-2 text-xs font-semibold`}
+          className={`${styleAnimalStatus("NOWY")} absolute top-3 right-3 z-2 rounded-2xl px-4 py-2 text-xs font-semibold`}
         >
-          {formatAnimalStatus.ZNALEZIONY}
+          {formatAnimalStatus.NOWY}
         </span>
         {foundAnimal.imageUrl.length > 0 ? (
           <img

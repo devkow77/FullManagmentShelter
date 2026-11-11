@@ -40,7 +40,7 @@ describe('Klatki - Testy integracyjne', () => {
         traits: 'Spokojny pies',
         dateOfBirth: new Date('2020-01-01'),
         description: 'Zwierzę zajmujące klatkę na potrzeby testów usuwania.',
-        status: 'ZNALEZIONY',
+        status: 'NOWY',
         healthStatus: 'ZDROWY',
         foundAt: new Date('2025-01-01'),
         foundLocation: 'Rzeszów',

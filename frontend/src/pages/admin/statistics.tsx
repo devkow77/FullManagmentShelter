@@ -464,7 +464,7 @@ const AdminStatisticsPage = () => {
                   },
                   {
                     key: "a-found",
-                    label: "Znalezione",
+                    label: "Nowe",
                     value: shelter.animals.totals.found,
                     icon: Bone,
                     description: "okres kwarantanny / oczekiwania",
@@ -530,10 +530,10 @@ const AdminStatisticsPage = () => {
                   },
                   {
                     key: "ad-accepted",
-                    label: "Zaakceptowane",
+                    label: "Na wizytę",
                     value: shelter.adoptions.totals.accepted,
                     icon: Home,
-                    description: "pozytywne decyzje",
+                    description: "oczekują na spotkanie",
                   },
                   {
                     key: "ad-completed",

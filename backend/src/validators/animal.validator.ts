@@ -10,7 +10,7 @@ const SizeEnum = z.enum(['MALY', 'SREDNI', 'DUZY'], {
   message: 'Rozmiar zwierzęcia jest wymagany.',
 });
 const StatusEnum = z.enum(
-  ['SZUKA_DOMU', 'ZNALEZIONY', 'W_TRAKCIE_ADOPCJI', 'ADOPTOWANY'],
+  ['SZUKA_DOMU', 'NOWY', 'W_TRAKCIE_ADOPCJI', 'ADOPTOWANY'],
   {
     message: 'Status zwierzęcia jest wymagany.',
   },

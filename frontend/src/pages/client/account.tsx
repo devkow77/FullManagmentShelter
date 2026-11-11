@@ -391,9 +391,9 @@ const AdoptionCard = ({
   onCancelled: () => void;
 }) => {
   const statusLabel = formatAdoptionStatus[adoption.status] ?? adoption.status;
-  const canCancel = adoption.status === "OCZEKUJACA";
+  const canCancel = adoption.status === "OCZEKUJACY";
   const shelterVisitDays =
-    adoption.status === "ZAAKCEPTOWANA"
+    adoption.status === "OCZEKUJACY_NA_WIZYTE"
       ? getDaysUntilShelterVisit(adoption.acceptedAt ?? adoption.updatedAt)
       : null;
   const [isCancelling, setIsCancelling] = useState(false);
@@ -463,8 +463,8 @@ const AdoptionCard = ({
             </p>
           )}
           {adoption.employeeNote?.trim() &&
-            (adoption.status === "ANULOWANA" ||
-              adoption.status === "ODRZUCONA") && (
+            (adoption.status === "ANULOWANY" ||
+              adoption.status === "ODRZUCONY") && (
               <p className="text-xs leading-5 text-slate-700 lg:text-sm lg:leading-6">
                 {adoption.employeeNote.trim()}
               </p>

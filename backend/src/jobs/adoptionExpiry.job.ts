@@ -16,7 +16,7 @@ export const expireAcceptedAdoptions = async () => {
 
   const expiredAdoptions = await prisma.adoption.findMany({
     where: {
-      status: AdoptionStatus.ZAAKCEPTOWANA,
+      status: AdoptionStatus.OCZEKUJACY_NA_WIZYTE,
       acceptedAt: { lt: cutoff },
     },
     select: {
@@ -41,7 +41,7 @@ export const expireAcceptedAdoptions = async () => {
       await tx.adoption.update({
         where: { id: adoption.id },
         data: {
-          status: AdoptionStatus.ANULOWANA,
+          status: AdoptionStatus.ANULOWANY,
           employeeNote: EXPIRED_NOTE,
         },
       });

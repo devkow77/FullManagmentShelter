@@ -53,7 +53,7 @@ const getAnimalNeedsStatus = async () => {
 
 const getPendingAdoptionsCount = async () => {
   const res = await axios.get<{ total: number }>(
-    "/api/adoptions?page=1&limit=1&status=OCZEKUJACA",
+    "/api/adoptions?page=1&limit=1&status=OCZEKUJACY",
   );
   return res.data.total;
 };

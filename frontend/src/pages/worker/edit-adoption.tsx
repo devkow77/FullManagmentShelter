@@ -58,9 +58,9 @@ const INITIAL_DECISION_OPTIONS: {
   label: string;
   variant: "success" | "destructive" | "canceled";
 }[] = [
-  { value: "ZAAKCEPTOWANA", label: "Akceptacja", variant: "success" },
-  { value: "ODRZUCONA", label: "Odrzucenie", variant: "destructive" },
-  { value: "ANULOWANA", label: "Anulacja", variant: "canceled" },
+  { value: "OCZEKUJACY_NA_WIZYTE", label: "Akceptacja", variant: "success" },
+  { value: "ODRZUCONY", label: "Odrzucenie", variant: "destructive" },
+  { value: "ANULOWANY", label: "Anulacja", variant: "canceled" },
 ];
 
 const POST_MEETING_DECISION_OPTIONS: {
@@ -68,8 +68,8 @@ const POST_MEETING_DECISION_OPTIONS: {
   label: string;
   variant: "success" | "canceled";
 }[] = [
-  { value: "ZAKONCZONA", label: "Finalizuj adopcję", variant: "success" },
-  { value: "ANULOWANA", label: "Anuluj po spotkaniu", variant: "canceled" },
+  { value: "ZAAKCEPTOWANY", label: "Finalizuj adopcję", variant: "success" },
+  { value: "ANULOWANY", label: "Anuluj po spotkaniu", variant: "canceled" },
 ];
 
 const getTemplateForDecision = (
@@ -80,9 +80,9 @@ const getTemplateForDecision = (
 ) => {
   if (stage === "post-meeting") {
     switch (decision) {
-      case "ZAKONCZONA":
+      case "ZAAKCEPTOWANY":
         return getCompletionTemplate(userName, animalName);
-      case "ANULOWANA":
+      case "ANULOWANY":
         return getPostMeetingCancellationTemplate(userName, animalName);
       default:
         return "";
@@ -90,11 +90,11 @@ const getTemplateForDecision = (
   }
 
   switch (decision) {
-    case "ZAAKCEPTOWANA":
+    case "OCZEKUJACY_NA_WIZYTE":
       return getAcceptanceTemplate(userName, animalName);
-    case "ODRZUCONA":
+    case "ODRZUCONY":
       return getRejectionTemplate(userName, animalName);
-    case "ANULOWANA":
+    case "ANULOWANY":
       return getCancellationTemplate(userName, animalName);
     default:
       return "";
@@ -103,13 +103,13 @@ const getTemplateForDecision = (
 
 const getSubmitLabel = (decision: DecisionStatus | null) => {
   switch (decision) {
-    case "ZAAKCEPTOWANA":
+    case "OCZEKUJACY_NA_WIZYTE":
       return "Zatwierdź akceptację";
-    case "ODRZUCONA":
+    case "ODRZUCONY":
       return "Zatwierdź odrzucenie";
-    case "ANULOWANA":
+    case "ANULOWANY":
       return "Zatwierdź anulację";
-    case "ZAKONCZONA":
+    case "ZAAKCEPTOWANY":
       return "Zatwierdź finalizację";
     default:
       return "Zatwierdź decyzję";
@@ -118,12 +118,12 @@ const getSubmitLabel = (decision: DecisionStatus | null) => {
 
 const getSubmitVariant = (decision: DecisionStatus | null) => {
   switch (decision) {
-    case "ZAAKCEPTOWANA":
-    case "ZAKONCZONA":
+    case "OCZEKUJACY_NA_WIZYTE":
+    case "ZAAKCEPTOWANY":
       return "success" as const;
-    case "ODRZUCONA":
+    case "ODRZUCONY":
       return "destructive" as const;
-    case "ANULOWANA":
+    case "ANULOWANY":
       return "canceled" as const;
     default:
       return "default" as const;
@@ -136,14 +136,14 @@ const getConfirmDialogCopy = (
 ) => {
   if (stage === "post-meeting") {
     switch (decision) {
-      case "ZAKONCZONA":
+      case "ZAAKCEPTOWANY":
         return {
           title: "Czy na pewno chcesz sfinalizować adopcję?",
           description:
             "Po potwierdzeniu status zmieni się na Adoptowano, a zwierzę zostanie oznaczone jako adoptowane.",
           confirmLabel: "Tak, finalizuj",
         };
-      case "ANULOWANA":
+      case "ANULOWANY":
         return {
           title: "Czy na pewno chcesz anulować po spotkaniu?",
           description:
@@ -160,21 +160,21 @@ const getConfirmDialogCopy = (
   }
 
   switch (decision) {
-    case "ZAAKCEPTOWANA":
+    case "OCZEKUJACY_NA_WIZYTE":
       return {
         title: "Czy na pewno chcesz zaakceptować wniosek?",
         description:
           "To jeszcze nie finalna adopcja. Wnioskodawca dostanie e-mail, że wniosek został wstępnie zaakceptowany i oczekujemy na ostateczną wizytę na żywo.",
         confirmLabel: "Tak, zaakceptuj",
       };
-    case "ODRZUCONA":
+    case "ODRZUCONY":
       return {
         title: "Czy na pewno chcesz odrzucić wniosek?",
         description:
           "Po potwierdzeniu status adopcji zmieni się na odrzucony, a wnioskodawca otrzyma przygotowaną odpowiedź.",
         confirmLabel: "Tak, odrzuć",
       };
-    case "ANULOWANA":
+    case "ANULOWANY":
       return {
         title: "Czy na pewno chcesz anulować wniosek?",
         description:
@@ -316,8 +316,8 @@ const EditAdoptionPage = () => {
 
   const employeeNote = watch("employeeNote");
   const hasEmployeeNote = Boolean(employeeNote?.trim());
-  const isPending = adoption?.status === "OCZEKUJACA";
-  const isAccepted = adoption?.status === "ZAAKCEPTOWANA";
+  const isPending = adoption?.status === "OCZEKUJACY";
+  const isAccepted = adoption?.status === "OCZEKUJACY_NA_WIZYTE";
   const canDecide = isPending || isAccepted;
   const decisionStage = isAccepted ? "post-meeting" : "initial";
   const decisionOptions = isAccepted

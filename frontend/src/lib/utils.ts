@@ -13,7 +13,7 @@ export const styleAnimalStatus = (status: string) => {
     case "SZUKA_DOMU":
       styles = "bg-red-100 border border-red-300 text-red-800";
       break;
-    case "ZNALEZIONY":
+    case "NOWY":
       styles = "bg-blue-100 border border-blue-300 text-blue-800";
       break;
     case "W_TRAKCIE_ADOPCJI":
@@ -83,7 +83,7 @@ export const formatAnimalHealthStatus: Record<string, string> = {
 
 export const formatAnimalStatus: Record<string, string> = {
   SZUKA_DOMU: "Szuka domu",
-  ZNALEZIONY: "Znaleziony",
+  NOWY: "Nowy",
   W_TRAKCIE_ADOPCJI: "W trakcie adopcji",
   ADOPTOWANY: "Adoptowany",
 };
@@ -150,19 +150,19 @@ export const styleAdoptionStatus = (status: string) => {
   let styles: string = "";
 
   switch (status) {
-    case "OCZEKUJACA":
+    case "OCZEKUJACY":
       styles = "bg-yellow-100 border border-yellow-300 text-yellow-800";
       break;
-    case "ZAAKCEPTOWANA":
+    case "OCZEKUJACY_NA_WIZYTE":
       styles = "bg-green-100 border border-green-300 text-green-800";
       break;
-    case "ODRZUCONA":
+    case "ODRZUCONY":
       styles = "bg-red-100 border border-red-300 text-red-800";
       break;
-    case "ANULOWANA":
+    case "ANULOWANY":
       styles = "bg-slate-100 border border-slate-300 text-slate-800";
       break;
-    case "ZAKONCZONA":
+    case "ZAAKCEPTOWANY":
       styles = "bg-violet-100 border border-violet-300 text-violet-800";
       break;
     default:
@@ -173,11 +173,11 @@ export const styleAdoptionStatus = (status: string) => {
 };
 
 export const formatAdoptionStatus: Record<string, string> = {
-  OCZEKUJACA: "Oczekująca",
-  ZAAKCEPTOWANA: "Zaakceptowana",
-  ODRZUCONA: "Odrzucona",
-  ANULOWANA: "Anulowana",
-  ZAKONCZONA: "Adoptowano",
+  OCZEKUJACY: "Oczekujący",
+  OCZEKUJACY_NA_WIZYTE: "Oczekujący na wizytę",
+  ODRZUCONY: "Odrzucony",
+  ANULOWANY: "Anulowany",
+  ZAAKCEPTOWANY: "Adoptowano",
 };
 
 /** Liczba dni od akceptacji wniosku (acceptedAt) na przyjście do schroniska */

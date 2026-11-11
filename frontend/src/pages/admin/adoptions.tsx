@@ -60,7 +60,7 @@ const AdminAdoptionsPage = () => {
 
   const [page, setPage] = useState(1);
   const [selectedStatutes, setSelectedStatutes] = useState<string[]>([
-    "OCZEKUJACA",
+    "OCZEKUJACY",
   ]);
 
   const filters: AdoptionsFilters = {

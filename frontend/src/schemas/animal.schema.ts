@@ -22,7 +22,7 @@ export const AnimalEnergyLevelEnum = z.enum(["NISKI", "SREDNI", "WYSOKI"], {
 });
 
 export const AnimalStatusEnum = z.enum(
-  ["SZUKA_DOMU", "ZNALEZIONY", "W_TRAKCIE_ADOPCJI", "ADOPTOWANY"],
+  ["SZUKA_DOMU", "NOWY", "W_TRAKCIE_ADOPCJI", "ADOPTOWANY"],
   { message: "Status zwierzęcia jest wymagany." },
 );
 

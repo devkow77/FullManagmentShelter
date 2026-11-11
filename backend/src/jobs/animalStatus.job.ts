@@ -17,7 +17,7 @@ export const startAnimalStatusJob = () => {
 
         const animalsToUpdate = await prisma.animal.findMany({
           where: {
-            status: AnimalStatus.ZNALEZIONY,
+            status: AnimalStatus.NOWY,
             foundAt: {
               lte: sevenDaysAgo,
             },
